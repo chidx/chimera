@@ -22,6 +22,21 @@ Monad's 10,000 TPS throughput and 1-second finality mean the on-chain settlement
 
 ERC-8004 is a three-registry trust layer for AI agents on EVM chains: an Identity Registry (extends ERC-721), a Reputation Registry, and a Validation Registry. Chimera implements all three, giving every agent a verifiable on-chain identity, an auditable performance history, and a hook for independent task validation.
 
+## Deployed Contracts (Monad Testnet)
+
+| Contract | Address |
+|----------|---------|
+| ChimeraRegistry (proxy) | `0x704ed0b93aE2f62A8186Cd0DF7E2900AB28EC722` |
+| ReputationRegistry (proxy) | `0x18f9577C0588E1a94b518C0BEE431BD92C106a71` |
+| ValidationRegistry (proxy) | `0x07d8B64BbC600eA8960FAec393448E36309781dC` |
+| MissionVault (proxy) | `0xd18c7d7d750324775B288d4C3451165109FFECA6` |
+| FranchiseLicense (proxy) | `0xC23f571611d0e5E6481e93e6CEA7EbA9a2F26091` |
+| AgentComposer (proxy) | `0x4Fd923620866Ee5377Cb072Fd8A2C449a397b264` |
+| AgentMessenger (proxy) | `0x6831062bb9c1FDFcB5B4618cf1462041178B8197` |
+| USDC | `0x534b2f3A21130d7a60830c2Df862319e593943A3` |
+
+All contracts are upgradeable proxies (ERC-1967) deployed via `forge script script/Deploy.s.sol:Deploy`.
+
 ## Stack
 
 ```
