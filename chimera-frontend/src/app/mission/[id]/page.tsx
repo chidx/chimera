@@ -250,19 +250,22 @@ function MissionDetailContent({ id }: { id: string }) {
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
-      <header className="border-b border-white/10 px-4 sm:px-6 py-4 flex items-center justify-between sticky top-0 bg-gray-950 z-30">
-        <Link
-          href="/"
-          className="text-white/60 hover:text-white transition-colors text-sm flex items-center gap-1"
-        >
-          <span aria-hidden>←</span>
-          <span>Back</span>
-        </Link>
-        <h1 className="font-bold text-xl">Mission #{id}</h1>
-        <div className="w-16" />
+      <header className="border-b border-white/10 sticky top-0 bg-gray-950 z-30">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+          <Link
+            href="/"
+            className="shrink-0 text-white/60 hover:text-white transition-colors text-sm flex items-center gap-1"
+          >
+            <span aria-hidden>←</span>
+            <span>Back</span>
+          </Link>
+          <h1 className="font-bold text-xl min-w-0">Mission #{id}</h1>
+          <div className="w-16 shrink-0" aria-hidden />
+        </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+      <main className="max-w-7xl mx-auto px-4 py-8">
+        <div className="max-w-5xl mx-auto space-y-6">
         {/* Top: status, type, deadline */}
         <div className="flex flex-wrap items-center gap-3">
           <StatusBadge status={status} />
@@ -355,6 +358,7 @@ function MissionDetailContent({ id }: { id: string }) {
               </button>
             </div>
           )}
+        </div>
         </div>
       </main>
 

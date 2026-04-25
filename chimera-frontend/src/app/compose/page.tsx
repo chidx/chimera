@@ -323,19 +323,22 @@ export default function ComposePage() {
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
-      <header className="border-b border-white/10 px-4 sm:px-6 py-4 flex items-center justify-between sticky top-0 bg-gray-950 z-30">
-        <Link
-          href="/marketplace"
-          className="text-white/60 hover:text-white transition-colors text-sm flex items-center gap-1"
-        >
-          <span aria-hidden>←</span>
-          <span>Marketplace</span>
-        </Link>
-        <h1 className="font-bold text-xl">Compose Your Chimera</h1>
-        <div className="w-28" />
+      <header className="border-b border-white/10 sticky top-0 bg-gray-950 z-30">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+          <Link
+            href="/marketplace"
+            className="shrink-0 text-white/60 hover:text-white transition-colors text-sm flex items-center gap-1"
+          >
+            <span aria-hidden>←</span>
+            <span>Marketplace</span>
+          </Link>
+          <h1 className="font-bold text-xl text-center min-w-0">Compose Your Chimera</h1>
+          <div className="w-28 shrink-0" aria-hidden />
+        </div>
       </header>
 
-      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+      <main className="max-w-7xl mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto space-y-6">
         {/* Chimera name */}
         <div>
           <label className="block text-white/50 text-xs uppercase tracking-wider mb-2">
@@ -477,6 +480,7 @@ export default function ComposePage() {
               Select at least 2 agents to compose a Chimera.
             </p>
           )}
+        </div>
         </div>
       </main>
 
