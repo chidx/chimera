@@ -50,25 +50,117 @@ ERC-8004 is a three-registry trust layer for AI agents on EVM chains: an Identit
 
 Each folder has its own README with setup and run commands.
 
-## Local infrastructure (Docker)
+## How to run
 
-Postgres (with pgvector), Redis, NATS, and Adminer are defined in [`docker-compose.yml`](./docker-compose.yml).
+### Prerequisites
+
+| Tool | Version | Purpose |
+|------|---------|---------|
+| [Docker](https://docs.docker.com/get-docker/) | any recent | Postgres, Redis, NATS |
+| [Node.js](https://nodejs.org/) | 20+ | Backend, frontend, Ponder |
+| [Foundry](https://book.getfoundry.sh/getting-started/installation) | latest | Contract build & deploy |
+| [Python](https://www.python.org/) | 3.11+ | Agent worker |
+
+---
+
+### 1. Start infrastructure
 
 ```bash
 docker compose up -d
 ```
 
-- **PostgreSQL:** `localhost:5432`, database `chimera`, user/password `chimera` / `chimera` (match `DATABASE_URL` in app `.env` files if you use these defaults).
-- **Redis:** `localhost:6379`
-- **NATS:** `4222` (client), `8222` (HTTP monitoring when using the compose command)
-- **Adminer:** [http://localhost:8080](http://localhost:8080) (DB UI)
+| Service | Address | Notes |
+|---------|---------|-------|
+| PostgreSQL | `localhost:5432` | db/user/pass all `chimera` |
+| Redis | `localhost:6379` | BullMQ queues |
+| NATS | `localhost:4222` | client · `8222` HTTP monitoring |
+| Adminer | [http://localhost:8080](http://localhost:8080) | DB UI |
 
-Stop and remove containers: `docker compose down` (add `-v` to drop the named volume and reset Postgres data).
+Stop: `docker compose down` (add `-v` to wipe Postgres data).
 
-## Typical flow
+---
 
-1. Start infrastructure: `docker compose up -d`
-2. Configure and run [`chimera-contracts`](./chimera-contracts/) if you need a fresh deploy; copy addresses into backend, Ponder, and frontend env files
-3. Run [`ponder`](./ponder/), [`chimera-backend`](./chimera-backend/), [`chimera-agents`](./chimera-agents/) (if you use the queue), and [`chimera-frontend`](./chimera-frontend/) as described in each README
+### 2. Deploy contracts (Monad testnet)
 
-Align `PORT` / `BACKEND_URL` / `NEXT_PUBLIC_API_URL` across backend, agents, and frontend so every service points at the same API base URL.
+```bash
+cd chimera-contracts
+cp .env.example .env          # fill MONAD_TESTNET_RPC, DEPLOYER_PRIVATE_KEY, USDC_ADDRESS
+forge build
+forge script script/Deploy.s.sol:Deploy --rpc-url monad_testnet --broadcast
+```
+
+Copy the deployed `ChimeraRegistry` and `MissionVault` addresses into the `.env` files of `chimera-backend`, `ponder`, and `chimera-frontend`.
+
+---
+
+### 3. Backend API
+
+```bash
+cd chimera-backend
+cp .env.example .env          # fill DATABASE_URL, REDIS_URL, contract addresses, API keys
+npm install
+npm run dev                   # API on http://localhost:3000
+```
+
+To run the BullMQ worker in a second terminal:
+
+```bash
+npm run worker
+```
+
+Health check: `GET http://localhost:3000/health`
+
+---
+
+### 4. Agent worker (Python)
+
+```bash
+cd chimera-agents
+python -m venv .venv
+source .venv/bin/activate     # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+cp .env.example .env          # fill BACKEND_URL, DATABASE_URL, REDIS_URL, ANTHROPIC_API_KEY
+python worker/agent_worker.py
+```
+
+`BACKEND_URL` must point at the running `chimera-backend` instance.
+
+---
+
+### 5. Ponder indexer (optional)
+
+Ponder watches on-chain events and writes indexed data to Postgres. Skip this step if you use direct DB writes from the backend instead.
+
+```bash
+cd ponder
+cp .env.local.example .env.local   # fill MONAD_TESTNET_RPC, contract addresses, DATABASE_URL
+npm install
+npm run dev
+```
+
+---
+
+### 6. Frontend
+
+```bash
+cd chimera-frontend
+cp .env.local.example .env.local   # fill NEXT_PUBLIC_API_URL, NEXT_PUBLIC_WALLETCONNECT_ID, NEXT_PUBLIC_ABLY_KEY
+npm install
+npm run dev                         # UI on http://localhost:3001
+```
+
+`NEXT_PUBLIC_API_URL` must match the URL where `chimera-backend` is listening (e.g. `http://localhost:3000`).
+
+---
+
+### Port reference
+
+| Service | Default port |
+|---------|-------------|
+| chimera-backend | `3000` |
+| chimera-frontend | `3001` |
+| Ponder | `42069` |
+| PostgreSQL | `5432` |
+| Redis | `6379` |
+| NATS | `4222` |
+| Adminer | `8080` |
