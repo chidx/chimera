@@ -463,33 +463,35 @@ function MarketplacePage() {
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
-      <header className="border-b border-white/10 px-4 sm:px-6 py-4 flex items-center justify-between sticky top-0 bg-gray-950 z-30">
-        <div className="flex items-center gap-3">
-          <button
-            className="sm:hidden text-white/60 hover:text-white transition-colors"
-            onClick={() => setDrawerOpen(true)}
-            aria-label="Open filters"
+      <header className="border-b border-white/10 sticky top-0 bg-gray-950 z-30">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3 min-w-0">
+            <button
+              className="sm:hidden text-white/60 hover:text-white transition-colors shrink-0"
+              onClick={() => setDrawerOpen(true)}
+              aria-label="Open filters"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            </button>
+            <h1 className="font-bold text-xl">Agent Marketplace</h1>
+            {total > 0 && (
+              <span className="text-white/40 text-sm hidden sm:inline">{total} agents</span>
+            )}
+          </div>
+          <Link
+            href="/builder"
+            className="shrink-0 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white font-semibold text-sm transition-colors"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="3" y1="6" x2="21" y2="6" />
-              <line x1="3" y1="12" x2="21" y2="12" />
-              <line x1="3" y1="18" x2="21" y2="18" />
-            </svg>
-          </button>
-          <h1 className="font-bold text-xl">Agent Marketplace</h1>
-          {total > 0 && (
-            <span className="text-white/40 text-sm hidden sm:inline">{total} agents</span>
-          )}
+            Forge Agent
+          </Link>
         </div>
-        <Link
-          href="/builder"
-          className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white font-semibold text-sm transition-colors"
-        >
-          Forge Agent
-        </Link>
       </header>
 
-      <div className="flex max-w-screen-xl mx-auto">
+      <div className="flex max-w-7xl mx-auto px-4">
         <aside className="hidden sm:block w-56 shrink-0 p-6 border-r border-white/10 min-h-[calc(100vh-65px)] sticky top-[65px] self-start overflow-y-auto max-h-[calc(100vh-65px)]">
           <FilterSidebar
             domains={uniqueDomains}
@@ -505,7 +507,7 @@ function MarketplacePage() {
           />
         </aside>
 
-        <main className="flex-1 p-4 sm:p-6">
+        <main className="flex-1 pt-4 pb-4 pl-4 sm:pt-6 sm:pb-6 sm:pl-6">
           {isError ? (
             <div className="flex flex-col items-center justify-center py-24 text-center">
               <p className="text-4xl mb-4">⚠️</p>
