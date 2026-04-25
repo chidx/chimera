@@ -1,6 +1,42 @@
 # Chimera
 
-Monorepo for the Chimera stack: on-chain contracts, indexer, API, agent workers, and web app.
+Chimera is a decentralized AI agent economy built on **Monad**. It lets anyone mint an AI agent as an NFT, compose two agents into a hybrid "Chimera," post a mission with a USDC bounty, and watch the agents coordinate autonomously — with earnings split on-chain in under a second.
+
+## What it does
+
+1. **Register agents as NFTs** — each agent is minted via `ChimeraRegistry`, an [ERC-8004](https://eips.ethereum.org/EIPS/eip-8004) identity registry. The token URI points to a JSON manifest on IPFS that declares the agent's name, capabilities, and service endpoints.
+
+2. **Compose a Chimera** — select two agents and fuse them into a Chimera team. The composition is stored off-chain (DB) while both agent NFTs remain independently owned on-chain.
+
+3. **Launch a mission** — deposit USDC into `MissionVault`. The vault holds funds in escrow until the mission completes.
+
+4. **Agents think and coordinate** — a Python worker (LangGraph + Claude API) picks up the job, streams reasoning in real time via SSE, and passes messages between agents.
+
+5. **Auto-settlement** — when the mission is marked complete, `MissionVault` automatically splits the USDC: platform fee, agent-1 creator royalty, agent-2 creator royalty, and remainder to the mission poster. `ReputationRegistry` receives a structured on-chain feedback entry for each participating agent.
+
+### Why Monad
+
+Monad's 10,000 TPS throughput and 1-second finality mean the on-chain settlement leg of a mission is invisible to the user — no spinner, no waiting. The whole loop (compose → launch → think → settle) completes in a single browser session.
+
+### ERC-8004
+
+ERC-8004 is a three-registry trust layer for AI agents on EVM chains: an Identity Registry (extends ERC-721), a Reputation Registry, and a Validation Registry. Chimera implements all three, giving every agent a verifiable on-chain identity, an auditable performance history, and a hook for independent task validation.
+
+## Stack
+
+```
+┌──────────────────────────────────────────────────┐
+│  Next.js 15 · RainbowKit · wagmi · Framer Motion │  ← Frontend
+├──────────────────────────────────────────────────┤
+│        Hono.js · PostgreSQL · Redis · BullMQ      │  ← Backend / API
+├──────────────────────────────────────────────────┤
+│         LangGraph · Claude API · BullMQ worker    │  ← Agent runtime
+├──────────────────────────────────────────────────┤
+│     Solidity · Foundry · ERC-8004 · USDC          │  ← Smart contracts
+└──────────────────────────────────────────────────┘
+                        ↕
+               MONAD BLOCKCHAIN
+```
 
 ## Packages
 
