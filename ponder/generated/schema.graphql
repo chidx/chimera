@@ -1,0 +1,371 @@
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+scalar BigInt
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Meta {
+  status: JSON
+}
+
+type Query {
+  agent(id: BigInt!): agent
+  agents(where: agentFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): agentPage!
+  agentCapability(id: String!): agentCapability
+  agentCapabilitys(where: agentCapabilityFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): agentCapabilityPage!
+  reputationFeedback(id: String!): reputationFeedback
+  reputationFeedbacks(where: reputationFeedbackFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): reputationFeedbackPage!
+  mission(id: BigInt!): mission
+  missions(where: missionFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): missionPage!
+  messageLog(id: BigInt!): messageLog
+  messageLogs(where: messageLogFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): messageLogPage!
+  _meta: Meta
+}
+
+type agent {
+  id: BigInt!
+  creator: String!
+  agentWallet: String!
+  createdAt: BigInt!
+  reputation: Int!
+  tasksDone: Int!
+}
+
+type agentPage {
+  items: [agent!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input agentFilter {
+  AND: [agentFilter]
+  OR: [agentFilter]
+  id: BigInt
+  id_not: BigInt
+  id_in: [BigInt]
+  id_not_in: [BigInt]
+  id_gt: BigInt
+  id_lt: BigInt
+  id_gte: BigInt
+  id_lte: BigInt
+  creator: String
+  creator_not: String
+  creator_in: [String]
+  creator_not_in: [String]
+  creator_contains: String
+  creator_not_contains: String
+  creator_starts_with: String
+  creator_ends_with: String
+  creator_not_starts_with: String
+  creator_not_ends_with: String
+  agentWallet: String
+  agentWallet_not: String
+  agentWallet_in: [String]
+  agentWallet_not_in: [String]
+  agentWallet_contains: String
+  agentWallet_not_contains: String
+  agentWallet_starts_with: String
+  agentWallet_ends_with: String
+  agentWallet_not_starts_with: String
+  agentWallet_not_ends_with: String
+  createdAt: BigInt
+  createdAt_not: BigInt
+  createdAt_in: [BigInt]
+  createdAt_not_in: [BigInt]
+  createdAt_gt: BigInt
+  createdAt_lt: BigInt
+  createdAt_gte: BigInt
+  createdAt_lte: BigInt
+  reputation: Int
+  reputation_not: Int
+  reputation_in: [Int]
+  reputation_not_in: [Int]
+  reputation_gt: Int
+  reputation_lt: Int
+  reputation_gte: Int
+  reputation_lte: Int
+  tasksDone: Int
+  tasksDone_not: Int
+  tasksDone_in: [Int]
+  tasksDone_not_in: [Int]
+  tasksDone_gt: Int
+  tasksDone_lt: Int
+  tasksDone_gte: Int
+  tasksDone_lte: Int
+}
+
+type agentCapability {
+  id: String!
+  tokenId: BigInt!
+  capabilityId: String!
+  revoked: Boolean!
+  grantedAt: BigInt!
+}
+
+type agentCapabilityPage {
+  items: [agentCapability!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input agentCapabilityFilter {
+  AND: [agentCapabilityFilter]
+  OR: [agentCapabilityFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  tokenId: BigInt
+  tokenId_not: BigInt
+  tokenId_in: [BigInt]
+  tokenId_not_in: [BigInt]
+  tokenId_gt: BigInt
+  tokenId_lt: BigInt
+  tokenId_gte: BigInt
+  tokenId_lte: BigInt
+  capabilityId: String
+  capabilityId_not: String
+  capabilityId_in: [String]
+  capabilityId_not_in: [String]
+  capabilityId_contains: String
+  capabilityId_not_contains: String
+  capabilityId_starts_with: String
+  capabilityId_ends_with: String
+  capabilityId_not_starts_with: String
+  capabilityId_not_ends_with: String
+  revoked: Boolean
+  revoked_not: Boolean
+  revoked_in: [Boolean]
+  revoked_not_in: [Boolean]
+  grantedAt: BigInt
+  grantedAt_not: BigInt
+  grantedAt_in: [BigInt]
+  grantedAt_not_in: [BigInt]
+  grantedAt_gt: BigInt
+  grantedAt_lt: BigInt
+  grantedAt_gte: BigInt
+  grantedAt_lte: BigInt
+}
+
+type reputationFeedback {
+  id: String!
+  agentTokenId: BigInt!
+  submitter: String!
+  score: Int!
+  taskRef: String!
+  evidenceURI: String!
+  timestamp: BigInt!
+}
+
+type reputationFeedbackPage {
+  items: [reputationFeedback!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input reputationFeedbackFilter {
+  AND: [reputationFeedbackFilter]
+  OR: [reputationFeedbackFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  agentTokenId: BigInt
+  agentTokenId_not: BigInt
+  agentTokenId_in: [BigInt]
+  agentTokenId_not_in: [BigInt]
+  agentTokenId_gt: BigInt
+  agentTokenId_lt: BigInt
+  agentTokenId_gte: BigInt
+  agentTokenId_lte: BigInt
+  submitter: String
+  submitter_not: String
+  submitter_in: [String]
+  submitter_not_in: [String]
+  submitter_contains: String
+  submitter_not_contains: String
+  submitter_starts_with: String
+  submitter_ends_with: String
+  submitter_not_starts_with: String
+  submitter_not_ends_with: String
+  score: Int
+  score_not: Int
+  score_in: [Int]
+  score_not_in: [Int]
+  score_gt: Int
+  score_lt: Int
+  score_gte: Int
+  score_lte: Int
+  taskRef: String
+  taskRef_not: String
+  taskRef_in: [String]
+  taskRef_not_in: [String]
+  taskRef_contains: String
+  taskRef_not_contains: String
+  taskRef_starts_with: String
+  taskRef_ends_with: String
+  taskRef_not_starts_with: String
+  taskRef_not_ends_with: String
+  evidenceURI: String
+  evidenceURI_not: String
+  evidenceURI_in: [String]
+  evidenceURI_not_in: [String]
+  evidenceURI_contains: String
+  evidenceURI_not_contains: String
+  evidenceURI_starts_with: String
+  evidenceURI_ends_with: String
+  evidenceURI_not_starts_with: String
+  evidenceURI_not_ends_with: String
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_in: [BigInt]
+  timestamp_not_in: [BigInt]
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+}
+
+type mission {
+  id: BigInt!
+  status: String!
+  earned: BigInt
+}
+
+type missionPage {
+  items: [mission!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input missionFilter {
+  AND: [missionFilter]
+  OR: [missionFilter]
+  id: BigInt
+  id_not: BigInt
+  id_in: [BigInt]
+  id_not_in: [BigInt]
+  id_gt: BigInt
+  id_lt: BigInt
+  id_gte: BigInt
+  id_lte: BigInt
+  status: String
+  status_not: String
+  status_in: [String]
+  status_not_in: [String]
+  status_contains: String
+  status_not_contains: String
+  status_starts_with: String
+  status_ends_with: String
+  status_not_starts_with: String
+  status_not_ends_with: String
+  earned: BigInt
+  earned_not: BigInt
+  earned_in: [BigInt]
+  earned_not_in: [BigInt]
+  earned_gt: BigInt
+  earned_lt: BigInt
+  earned_gte: BigInt
+  earned_lte: BigInt
+}
+
+type messageLog {
+  id: BigInt!
+  missionId: Int!
+  fromTokenId: Int!
+  toTokenId: Int!
+  messageType: String!
+  payloadHash: String!
+  timestamp: Int!
+}
+
+type messageLogPage {
+  items: [messageLog!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input messageLogFilter {
+  AND: [messageLogFilter]
+  OR: [messageLogFilter]
+  id: BigInt
+  id_not: BigInt
+  id_in: [BigInt]
+  id_not_in: [BigInt]
+  id_gt: BigInt
+  id_lt: BigInt
+  id_gte: BigInt
+  id_lte: BigInt
+  missionId: Int
+  missionId_not: Int
+  missionId_in: [Int]
+  missionId_not_in: [Int]
+  missionId_gt: Int
+  missionId_lt: Int
+  missionId_gte: Int
+  missionId_lte: Int
+  fromTokenId: Int
+  fromTokenId_not: Int
+  fromTokenId_in: [Int]
+  fromTokenId_not_in: [Int]
+  fromTokenId_gt: Int
+  fromTokenId_lt: Int
+  fromTokenId_gte: Int
+  fromTokenId_lte: Int
+  toTokenId: Int
+  toTokenId_not: Int
+  toTokenId_in: [Int]
+  toTokenId_not_in: [Int]
+  toTokenId_gt: Int
+  toTokenId_lt: Int
+  toTokenId_gte: Int
+  toTokenId_lte: Int
+  messageType: String
+  messageType_not: String
+  messageType_in: [String]
+  messageType_not_in: [String]
+  messageType_contains: String
+  messageType_not_contains: String
+  messageType_starts_with: String
+  messageType_ends_with: String
+  messageType_not_starts_with: String
+  messageType_not_ends_with: String
+  payloadHash: String
+  payloadHash_not: String
+  payloadHash_in: [String]
+  payloadHash_not_in: [String]
+  payloadHash_contains: String
+  payloadHash_not_contains: String
+  payloadHash_starts_with: String
+  payloadHash_ends_with: String
+  payloadHash_not_starts_with: String
+  payloadHash_not_ends_with: String
+  timestamp: Int
+  timestamp_not: Int
+  timestamp_in: [Int]
+  timestamp_not_in: [Int]
+  timestamp_gt: Int
+  timestamp_lt: Int
+  timestamp_gte: Int
+  timestamp_lte: Int
+}
