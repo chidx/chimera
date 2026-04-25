@@ -1,15 +1,38 @@
-# Monad Blitz Jogja Submission Process
+# Chimera
 
-## Steps to prepare your project repo:
+Monorepo for the Chimera stack: on-chain contracts, indexer, API, agent workers, and web app.
 
-1. Visit the `monad-blitz-jogja` repo (link [here](https://github.com/monad-developers/monad-blitz-jogja)) and fork it.
+## Packages
 
-![1.png](/screenshots/1.png)
+| Directory | Role | Details |
+|-----------|------|---------|
+| [`chimera-contracts/`](./chimera-contracts/) | Solidity (Foundry) | Build, test, deploy |
+| [`ponder/`](./ponder/) | On-chain indexer (Ponder) | Index events to Postgres |
+| [`chimera-backend/`](./chimera-backend/) | REST API (Hono) | Core backend and optional worker |
+| [`chimera-agents/`](./chimera-agents/) | Python agent worker | BullMQ / LangGraph jobs |
+| [`chimera-frontend/`](./chimera-frontend/) | Web UI (Next.js) | Browser client |
 
-2. Give it your project name, a one-liner description, make sure you are forking `main` branch and click `Create Fork`
+Each folder has its own README with setup and run commands.
 
-![2.png](https://github.com/monad-developers/monad-blitz-denver/blob/main/screenshots/2.png?raw=true)
+## Local infrastructure (Docker)
 
-3. In your fork you can make all the changes you want, add code of your project, create branches, add information to `README.md` , you can change anything and everything.
+Postgres (with pgvector), Redis, NATS, and Adminer are defined in [`docker-compose.yml`](./docker-compose.yml).
 
-4. For next steps head to [Blitz Portal](https://blitz.devnads.com)
+```bash
+docker compose up -d
+```
+
+- **PostgreSQL:** `localhost:5432`, database `chimera`, user/password `chimera` / `chimera` (match `DATABASE_URL` in app `.env` files if you use these defaults).
+- **Redis:** `localhost:6379`
+- **NATS:** `4222` (client), `8222` (HTTP monitoring when using the compose command)
+- **Adminer:** [http://localhost:8080](http://localhost:8080) (DB UI)
+
+Stop and remove containers: `docker compose down` (add `-v` to drop the named volume and reset Postgres data).
+
+## Typical flow
+
+1. Start infrastructure: `docker compose up -d`
+2. Configure and run [`chimera-contracts`](./chimera-contracts/) if you need a fresh deploy; copy addresses into backend, Ponder, and frontend env files
+3. Run [`ponder`](./ponder/), [`chimera-backend`](./chimera-backend/), [`chimera-agents`](./chimera-agents/) (if you use the queue), and [`chimera-frontend`](./chimera-frontend/) as described in each README
+
+Align `PORT` / `BACKEND_URL` / `NEXT_PUBLIC_API_URL` across backend, agents, and frontend so every service points at the same API base URL.

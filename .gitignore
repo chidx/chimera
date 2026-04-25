@@ -1,0 +1,34 @@
+# Environment (keep *.example tracked)
+.env*
+!.env.example
+
+# Foundry
+cache/
+out/
+broadcast/
+
+# Dependencies & build (common additions)
+node_modules/
+dist/
+build/
+*.egg-info/
+.venv/
+__pycache__/
+*.py[cod]
+
+# OS & editors
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*.swo
+
+# Local tooling
+.claude/settings.local.json
+
+*.txt
+
+chimera-hackathon-impl.md
+chimera-hackathon-scope.md
+chimera-technical.md
+chimera-implementation.md
